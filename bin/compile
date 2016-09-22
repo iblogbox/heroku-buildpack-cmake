@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+set -e
+
+echo "-----> Installing CMake"
+
+# change to the the BUILD_DIR ($1)
+BUILD_DIR=$1
+
+VENDOR_DIR="$BUILD_DIR/vendor"
+EXPORT_PATH="$PWD/export"
+PROFILE_PATH="$BUILD_DIR/.profile.d/cmake.sh"
+
+mkdir -p $(dirname $PROFILE_PATH)
+
+# download
+curl -s -O https://cmake.org/files/v3.2/cmake-3.2.1-Linux-x86_64.tar.gz
+
+# untar the binary to the directory we want
+tar -C "$BUILD_DIR/vendor" -xf cmake-3.2.1-Linux-x86_64.tar.gz
+mv "$BUILD_DIR/vendor/cmake-3.2.1-Linux-x86_64/" "$BUILD_DIR/vendor/cmake"
+
+echo "export PATH=\$PATH:app/vendor/cmake/bin" >> $PROFILE_PATH
+echo "export PATH=\$PATH:$BUILD_DIR/vendor/cmake/bin" >> $EXPORT_PATH
